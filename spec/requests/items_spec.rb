@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Items API', type: :request do
+  ItemsController.skip_before_action :authorize!
+
   let!(:todo) { create(:todo) }
   let!(:items) { create_list(:item, 20, todo_id: todo.id) }
   let(:todo_id) { todo.id }
