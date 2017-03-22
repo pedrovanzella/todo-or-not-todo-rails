@@ -19,14 +19,21 @@ RSpec.describe 'Users API', type: :request do
 
     context 'when user already exists' do
       let(:user) { create(:user) }
-      before { post '/users', params: attributes_for(:user) }
+      before do
+        post '/users', params: attributes_for(:user)
+        post '/users', params: attributes_for(:user)
+      end
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
 
       it 'returns a validation failure message' do
-        expect(response.body).to match(/User already exists/)
+        expect(json['errors']['email']).to eq(["has already been taken"])
+      end
+
+      it 'still has only one user on the database' do
+        expect(User.all.count).to eq(1)
       end
     end
   end
