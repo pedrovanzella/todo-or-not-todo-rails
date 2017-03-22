@@ -9,7 +9,7 @@ RSpec.describe 'Users API', type: :request do
       before { post '/users', params: attributes_for(:user) }
 
       it 'registers the user' do
-        pending
+        expect(json[:email]).to eq(attributes_for(:user)['email'])
       end
 
       it 'returns status code 201' do
@@ -26,7 +26,7 @@ RSpec.describe 'Users API', type: :request do
       end
 
       it 'returns a validation failure message' do
-        pending
+        expect(response.body).to match(/User already exists/)
       end
     end
   end
